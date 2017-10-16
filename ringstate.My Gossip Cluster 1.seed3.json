@@ -1,0 +1,1 @@
+[["org.apache.gossip.LocalGossipMember",{"uri":"udp://192.168.1.3:11111","heartbeat":9704813954167,"clusterName":"My Gossip Cluster 1","id":"seed","properties":["java.util.HashMap",{}]}]]
