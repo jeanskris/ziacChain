@@ -191,13 +191,13 @@ public class ZiacChainApplicationTests {
     @Test
     public void test4() {
         try {
-            String myIpAddress = InetAddress.getLocalHost().getHostAddress();
             String cluster = "My Gossip Cluster 1";
             GossipSettings s = new GossipSettings();
             s.setWindowSize(10);
             s.setConvictThreshold(1.0D);
             s.setGossipInterval(10);
-            GossipService gossipService = new GossipService("mycluster", URI.create("udp://localhost:10000"), "0", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://localhost:10000"), "0")), s, (a, b) -> {
+            String myIpAddress = InetAddress.getLocalHost().getHostAddress();
+            GossipService gossipService = new GossipService("mycluster", URI.create("udp://" + myIpAddress + ":" +10000), "0", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://" + myIpAddress + ":" +10000), "0")), s, (a, b) -> {
             }, new MetricRegistry());
             gossipService.start();
 
@@ -222,7 +222,7 @@ public class ZiacChainApplicationTests {
             s.setWindowSize(10);
             s.setConvictThreshold(1.0D);
             s.setGossipInterval(10);
-            GossipService gossipService = new GossipService("mycluster", URI.create("udp://localhost:10001"), "1", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://localhost:10000"), "0")), s, (a, b) -> {
+            GossipService gossipService = new GossipService("mycluster", URI.create("udp://" + myIpAddress + ":" +10001), "1", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://" + myIpAddress + ":" +10000), "0")), s, (a, b) -> {
             }, new MetricRegistry());
             gossipService.start();
 
@@ -247,7 +247,7 @@ public class ZiacChainApplicationTests {
             s.setWindowSize(10);
             s.setConvictThreshold(1.0D);
             s.setGossipInterval(10);
-            GossipService gossipService = new GossipService("mycluster", URI.create("udp://localhost:10002"), "2", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://localhost:10000"), "0")), s, (a, b) -> {
+            GossipService gossipService = new GossipService("mycluster", URI.create("udp://" + myIpAddress + ":" +10002), "2", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://" + myIpAddress + ":" +10000), "0")), s, (a, b) -> {
             }, new MetricRegistry());
             gossipService.start();
 
