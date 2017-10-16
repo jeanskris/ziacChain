@@ -22,3 +22,11 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+#忽略.idea文件
+.idea
+#忽略编译生成的文件
+out
+target
+.idea/workspace.xml
+.json
