@@ -67,6 +67,9 @@ public class ZiacChainApplicationTests {
         }
     }
 
+    /**
+     * 测试互相通信
+     */
     @Test
     public void test2() {
 
@@ -86,7 +89,7 @@ public class ZiacChainApplicationTests {
                 throw new RuntimeException(var9);
             }
             startupMembers.add(new RemoteGossipMember(cluster, seedUrl, "seed0", 0L, new HashMap()));
-            GossipService gossipService0 = new GossipService(cluster, seedUrl, "", new HashMap(), startupMembers, settings, (GossipListener) null, new MetricRegistry());
+            GossipService gossipService0 = new GossipService(cluster, seedUrl, "seed0", new HashMap(), startupMembers, settings, (GossipListener) null, new MetricRegistry());
             gossipService0.start();
             URI url;
             try {
@@ -95,7 +98,7 @@ public class ZiacChainApplicationTests {
                 throw new RuntimeException(var9);
             }
             GossipService gossipService = new GossipService(cluster,
-                    url, "seed3", new HashMap(), startupMembers, settings,
+                    url, "node1", new HashMap(), startupMembers, settings,
                     new GossipListener() {
                         @Override
                         public void gossipEvent(GossipMember member, GossipState state) {
@@ -108,16 +111,9 @@ public class ZiacChainApplicationTests {
             gossipService.start();
 
             while (true) {
-                sleep(2000L);
-                if (!clients.isEmpty()) {
-                    if (!clients.isEmpty()) {
-                        List<LocalGossipMember> localGossipMemberList1 = clients.get(0).getGossipManager().getLiveMembers();
-                        for (LocalGossipMember localGossipMember : localGossipMemberList1) {
-                            System.out.print(" " + localGossipMember.getUri());
-
-                        }
-                    }
-                }
+                System.out.println("Live: " + gossipService.getGossipManager().getLiveMembers());
+                System.out.println("Dead: " + gossipService.getGossipManager().getDeadMembers());
+                Thread.sleep(2000L);
             }
             //((GossipService) clients.get(0)).getGossipManager().shutdown();
         } catch (UnknownHostException var10) {
@@ -128,6 +124,9 @@ public class ZiacChainApplicationTests {
 
     }
 
+    /**
+     * 1111作为seed节点并启动   启动50001监听1111
+     */
     @Test
     public void test3() {
         try {
@@ -146,8 +145,7 @@ public class ZiacChainApplicationTests {
                 throw new RuntimeException(var9);
             }
             startupMembers.add(new RemoteGossipMember(cluster, seedUrl, "seed0", 0L, new HashMap()));
-            /*GossipService gossipService0 = new GossipService(cluster, seedUrl, "", new HashMap(), startupMembers, settings, (GossipListener) null, new MetricRegistry());
-			gossipService0.start();*/
+
             URI url;
             try {
                 url = new URI("udp://" + myIpAddress + ":" + 50002);
@@ -155,7 +153,7 @@ public class ZiacChainApplicationTests {
                 throw new RuntimeException(var9);
             }
             GossipService gossipService = new GossipService(cluster,
-                    url, "seed3", new HashMap(), startupMembers, settings,
+                    url, "node2", new HashMap(), startupMembers, settings,
                     new GossipListener() {
                         @Override
                         public void gossipEvent(GossipMember member, GossipState state) {
@@ -168,16 +166,9 @@ public class ZiacChainApplicationTests {
             gossipService.start();
 
             while (true) {
-                sleep(2000L);
-                if (!clients.isEmpty()) {
-                    if (!clients.isEmpty()) {
-                        List<LocalGossipMember> localGossipMemberList1 = clients.get(0).getGossipManager().getLiveMembers();
-                        for (LocalGossipMember localGossipMember : localGossipMemberList1) {
-                            System.out.print(" " + localGossipMember.getUri());
-
-                        }
-                    }
-                }
+                System.out.println("Live: " + gossipService.getGossipManager().getLiveMembers());
+                System.out.println("Dead: " + gossipService.getGossipManager().getDeadMembers());
+                Thread.sleep(2000L);
             }
             //((GossipService) clients.get(0)).getGossipManager().shutdown();
         } catch (UnknownHostException var10) {
@@ -188,6 +179,10 @@ public class ZiacChainApplicationTests {
 
     }
 
+    /**
+     * 启动50002监听1111
+     * 最后1111 50001  50002实现一致，拥有除自己以外节点的信息。
+     */
     @Test
     public void test4() {
         try {
@@ -197,7 +192,7 @@ public class ZiacChainApplicationTests {
             s.setConvictThreshold(1.0D);
             s.setGossipInterval(10);
             String myIpAddress = InetAddress.getLocalHost().getHostAddress();
-            GossipService gossipService = new GossipService("mycluster", URI.create("udp://" + myIpAddress + ":" +10000), "0", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://" + myIpAddress + ":" +10000), "0")), s, (a, b) -> {
+            GossipService gossipService = new GossipService("mycluster", URI.create("udp://" + myIpAddress + ":" + 10000), "0", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://" + myIpAddress + ":" + 10000), "0")), s, (a, b) -> {
             }, new MetricRegistry());
             gossipService.start();
 
@@ -222,7 +217,7 @@ public class ZiacChainApplicationTests {
             s.setWindowSize(10);
             s.setConvictThreshold(1.0D);
             s.setGossipInterval(10);
-            GossipService gossipService = new GossipService("mycluster", URI.create("udp://" + myIpAddress + ":" +10001), "1", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://" + myIpAddress + ":" +10000), "0")), s, (a, b) -> {
+            GossipService gossipService = new GossipService("mycluster", URI.create("udp://" + myIpAddress + ":" + 10001), "1", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://" + myIpAddress + ":" + 10000), "0")), s, (a, b) -> {
             }, new MetricRegistry());
             gossipService.start();
 
@@ -247,7 +242,7 @@ public class ZiacChainApplicationTests {
             s.setWindowSize(10);
             s.setConvictThreshold(1.0D);
             s.setGossipInterval(10);
-            GossipService gossipService = new GossipService("mycluster", URI.create("udp://" + myIpAddress + ":" +10002), "2", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://" + myIpAddress + ":" +10000), "0")), s, (a, b) -> {
+            GossipService gossipService = new GossipService("mycluster", URI.create("udp://" + myIpAddress + ":" + 10002), "2", new HashMap(), Arrays.asList(new RemoteGossipMember("mycluster", URI.create("udp://" + myIpAddress + ":" + 10000), "0")), s, (a, b) -> {
             }, new MetricRegistry());
             gossipService.start();
 
