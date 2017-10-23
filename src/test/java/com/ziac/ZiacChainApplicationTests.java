@@ -268,7 +268,7 @@ public class ZiacChainApplicationTests {
     @Test
     public void test8() {
         try {
-            String[] args = {"udp://localhost:10000", "0", "udp://localhost:10000", "0"};
+            String[] args = {"udp://192.168.1.3:10000", "0", "udp://192.168.1.3:10000", "0"};
             GossipService gossipService = StandAloneNodeCrdtOrSetService.testCrdtOrSetService(args,"myCluster","abc");
             StandAloneNodeCrdtOrSetService.inputData('a', "123", gossipService);
         } catch (Exception var10) {
@@ -278,7 +278,7 @@ public class ZiacChainApplicationTests {
     @Test
     public void test9() {
         try {
-            String[] args = {"udp://localhost:10001", "1", "udp://localhost:10000", "0"};
+            String[] args = {"udp://192.168.1.3:10001", "1", "udp://192.168.1.3:10000", "0"};
             GossipService gossipService = StandAloneNodeCrdtOrSetService.testCrdtOrSetService(args,"myCluster","abc");
             StandAloneNodeCrdtOrSetService.inputData('a', "456", gossipService);
             try {
@@ -295,7 +295,7 @@ public class ZiacChainApplicationTests {
     @Test
     public void test10() {
         try {
-            String[] args = {"udp://localhost:10002", "2", "udp://localhost:10000", "0"};
+            String[] args = {"udp://192.168.1.3:10002", "2", "udp://192.168.1.3:10000", "0"};
             GossipService gossipService = StandAloneNodeCrdtOrSetService.testCrdtOrSetService(args,"myCluster","abc");
             StandAloneNodeCrdtOrSetService.inputData('a', "789", gossipService);
             try {
@@ -317,8 +317,8 @@ public class ZiacChainApplicationTests {
     @Test
     public void test11() {
         try {
-            String[] args = {"udp://localhost:10000", "0", "udp://localhost:10000", "1"};
-            GossipService gossipService = StandAloneNodeCrdtOrSetService.testDataService(args,"myCluster1","test.txt");
+            String[] args = {"udp://192.168.1.3:30000", "30", "udp://192.168.1.3:30000", "30"};
+            GossipService gossipService = StandAloneNodeCrdtOrSetService.testDataService(args,"myCluster3","test.txt");
             while (true){
                 try {
                     Thread.sleep(6000L);
@@ -335,8 +335,8 @@ public class ZiacChainApplicationTests {
     @Test
     public void test12() {
         try {
-            String[] args = {"udp://localhost:10002", "2", "udp://localhost:10000", "1"};
-            GossipService gossipService = StandAloneNodeCrdtOrSetService.testDataService(args,"myCluster1","test.txt");
+            String[] args = {"udp://192.168.1.3:30002", "32", "udp://192.168.1.3:30000", "30"};
+            GossipService gossipService = StandAloneNodeCrdtOrSetService.testDataService(args,"myCluster3","test.txt");
             SharedGossipDataMessage m = new SharedGossipDataMessage();
             m.setExpireAt(9223372036854775807L);
             m.setKey("test.txt");

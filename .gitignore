@@ -30,3 +30,4 @@ out
 target
 .idea/workspace.xml
 *.json
+*.DS_Store
