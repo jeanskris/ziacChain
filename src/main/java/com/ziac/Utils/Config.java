@@ -36,7 +36,15 @@ public class Config {
     private static final Log logger = LogFactory.getLog(Config.class);
 
     private static final String DEFAULT_CONFIG = "config.properties";
-    public static final String ORG_HYPERLEDGER_FABRIC_SDK_CONFIGURATION = "com.ziac.ziacChain.configuration";
+    private static final String SEED_IP = "com.ziac.ziacChain.seedIP";
+    private static final String SEED_PORT= "com.ziac.ziacChain.seedPort";
+    private static final String SEED_ID= "com.ziac.ziacChain.seedId";
+    private static final String CLUSTER_NAME= "com.ziac.ziacChain.clusterName";
+
+    public static final String CODE_DIRECTORY = "com.ziac.ziacChain.codeDirectory";
+
+
+    public static final String CONFIGURATION = "com.ziac.ziacChain.resource";
     public static final String SECURITY_LEVEL = "com.ziac.ziacChain.security_level";
     public static final String HASH_ALGORITHM = "com.ziac.ziacChain.hash_algorithm";
     public static final String CACERTS = "com.ziac.ziacChain.cacerts";
@@ -67,7 +75,8 @@ public class Config {
         FileInputStream configProps;
 
         try {
-            loadFile = new File(System.getProperty(ORG_HYPERLEDGER_FABRIC_SDK_CONFIGURATION, DEFAULT_CONFIG))
+            String configPath = Config.class.getClassLoader().getResource(DEFAULT_CONFIG).getPath();
+            loadFile = new File(configPath)
                     .getAbsoluteFile();
             logger.debug(String.format("Loading configuration from %s and it is present: %b", loadFile.toString(),
                     loadFile.exists()));
@@ -298,6 +307,23 @@ public class Config {
         return Integer.parseInt(getProperty(MAX_LOG_STRING_LENGTH));
     }
 
+    public String getSeedIp(){
+        return getProperty(SEED_IP);
+    }
+    public String getSeedPort(){
+        return getProperty(SEED_PORT);
+    }
+
+    public  String getSeedId() {
+        return getProperty(SEED_ID);
+    }
+
+    public  String getClusterName() {
+        return getProperty(CLUSTER_NAME);
+    }
+    public  String getCodeDirectory() {
+        return getProperty(CODE_DIRECTORY);
+    }
     /**
      * getProposalConsistencyValidation determine if validation of the proposals should
      * be done before sending to the orderer.

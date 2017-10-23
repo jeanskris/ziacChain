@@ -1,9 +1,13 @@
 package com.ziac;
 
 import com.codahale.metrics.MetricRegistry;
+import com.ziac.Utils.Config;
+import com.ziac.Utils.Utils;
 import org.apache.gossip.*;
+import org.apache.gossip.crdt.OrSet;
 import org.apache.gossip.event.GossipListener;
 import org.apache.gossip.event.GossipState;
+import org.apache.gossip.model.SharedGossipDataMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -11,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -115,7 +120,7 @@ public class ZiacChainApplicationTests {
                 System.out.println("Dead: " + gossipService.getGossipManager().getDeadMembers());
                 Thread.sleep(2000L);
             }
-            //((GossipService) clients.get(0)).getGossipManager().shutdown();
+            //((GossipServiceImpl) clients.get(0)).getGossipManager().shutdown();
         } catch (UnknownHostException var10) {
             var10.printStackTrace();
         } catch (InterruptedException var11) {
@@ -125,6 +130,7 @@ public class ZiacChainApplicationTests {
     }
 
     /**
+     * test3-6
      * 1111作为seed节点并启动   启动50001监听1111
      */
     @Test
@@ -170,7 +176,7 @@ public class ZiacChainApplicationTests {
                 System.out.println("Dead: " + gossipService.getGossipManager().getDeadMembers());
                 Thread.sleep(2000L);
             }
-            //((GossipService) clients.get(0)).getGossipManager().shutdown();
+            //((GossipServiceImpl) clients.get(0)).getGossipManager().shutdown();
         } catch (UnknownHostException var10) {
             var10.printStackTrace();
         } catch (InterruptedException var11) {
@@ -180,6 +186,7 @@ public class ZiacChainApplicationTests {
     }
 
     /**
+     *
      * 启动50002监听1111
      * 最后1111 50001  50002实现一致，拥有除自己以外节点的信息。
      */
@@ -255,6 +262,98 @@ public class ZiacChainApplicationTests {
             var10.printStackTrace();
         } catch (InterruptedException var11) {
             var11.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test8() {
+        try {
+            String[] args = {"udp://localhost:10000", "0", "udp://localhost:10000", "0"};
+            GossipService gossipService = StandAloneNodeCrdtOrSetService.testCrdtOrSetService(args,"myCluster","abc");
+            StandAloneNodeCrdtOrSetService.inputData('a', "123", gossipService);
+        } catch (Exception var10) {
+            var10.printStackTrace();
+        }
+    }
+    @Test
+    public void test9() {
+        try {
+            String[] args = {"udp://localhost:10001", "1", "udp://localhost:10000", "0"};
+            GossipService gossipService = StandAloneNodeCrdtOrSetService.testCrdtOrSetService(args,"myCluster","abc");
+            StandAloneNodeCrdtOrSetService.inputData('a', "456", gossipService);
+            try {
+                Thread.sleep(6000L);
+            } catch (Exception var2) {
+                ;
+            }
+            StandAloneNodeCrdtOrSetService.inputData('g', "1", gossipService);
+
+        } catch (Exception var10) {
+            var10.printStackTrace();
+        }
+    }
+    @Test
+    public void test10() {
+        try {
+            String[] args = {"udp://localhost:10002", "2", "udp://localhost:10000", "0"};
+            GossipService gossipService = StandAloneNodeCrdtOrSetService.testCrdtOrSetService(args,"myCluster","abc");
+            StandAloneNodeCrdtOrSetService.inputData('a', "789", gossipService);
+            try {
+                Thread.sleep(6000L);
+            } catch (Exception var2) {
+                ;
+            }
+            StandAloneNodeCrdtOrSetService.inputData('g', "1", gossipService);
+
+        } catch (Exception var10) {
+            var10.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * Test file transfer
+     * */
+    @Test
+    public void test11() {
+        try {
+            String[] args = {"udp://localhost:10000", "0", "udp://localhost:10000", "1"};
+            GossipService gossipService = StandAloneNodeCrdtOrSetService.testDataService(args,"myCluster1","test.txt");
+            while (true){
+                try {
+                    Thread.sleep(6000L);
+                    System.out.println("---------- " + (gossipService.getGossipManager().findSharedGossipData("test.txt") == null ? "" : (Utils.byte2File((byte[])gossipService.getGossipManager().findSharedGossipData("test.txt").getPayload(), Config.getConfig().getCodeDirectory(),"1.txt")).getPath()));
+
+                } catch (Exception var2) {
+                    ;
+                }
+            }
+        } catch (Exception var10) {
+            var10.printStackTrace();
+        }
+    }
+    @Test
+    public void test12() {
+        try {
+            String[] args = {"udp://localhost:10002", "2", "udp://localhost:10000", "1"};
+            GossipService gossipService = StandAloneNodeCrdtOrSetService.testDataService(args,"myCluster1","test.txt");
+            SharedGossipDataMessage m = new SharedGossipDataMessage();
+            m.setExpireAt(9223372036854775807L);
+            m.setKey("test.txt");
+            com.ziac.Utils.Config config = com.ziac.Utils.Config.getConfig();
+            byte[] bytes = Utils.readFile(new File(config.getCodeDirectory()+"/test.txt"));
+            m.setPayload(bytes);
+            m.setTimestamp(System.currentTimeMillis());
+            gossipService.getGossipManager().gossipSharedData(m);
+            while (true){
+                try {
+                    Thread.sleep(6000L);
+                } catch (Exception var2) {
+                    ;
+                }
+            }
+        } catch (Exception var10) {
+            var10.printStackTrace();
         }
     }
 }

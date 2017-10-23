@@ -139,8 +139,34 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!--<plugin>
+                <groupId>com.alibaba.citrus.tool</groupId>
+                <artifactId>autoconfig-maven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>autoconfig</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
         </plugins>
     </build>
-
+   <!-- <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <autoconfig.userProperties>antx-daily.properties</autoconfig.userProperties>
+            </properties>
+        </profile>
+        <profile>
+            <id>online</id>
+            <properties>
+                <autoconfig.userProperties>antx-online.properties</autoconfig.userProperties>
+            </properties>
+        </profile>
+    </profiles>-->
 
 </project>
