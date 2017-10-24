@@ -23,11 +23,17 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <grpc.version>1.5.0</grpc.version><!-- CURRENT_GRPC_VERSION -->
-        <bouncycastle.version>1.57</bouncycastle.version>
-        <httpclient.version>4.5.3</httpclient.version>
-        <skipITs>true</skipITs>
-        <alpn-boot-version>8.1.7.v20160121</alpn-boot-version>
-        <jacoco.version>0.7.9</jacoco.version>
+
+        <!-- dependency versions -->
+        <jackson.version>2.8.5</jackson.version>
+        <metrics.version>3.1.2</metrics.version>
+        <commons-math.version>1.2</commons-math.version>
+        <junit.jupiter.version>5.0.0-M2</junit.jupiter.version>
+        <junit.platform.version>1.0.0-M2</junit.platform.version>
+        <junit.vintage.version>4.12.0-M2</junit.vintage.version>
+        <log4j.version>1.2.17</log4j.version>
+        <tunit.version>0.0.0</tunit.version>
+        <mockito.version>2.8.9</mockito.version>
       </properties>
 
     <dependencies>
@@ -63,29 +69,13 @@
             <artifactId>grpc-stub</artifactId>
             <version>${grpc.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-tcnative-boringssl-static</artifactId>
-            <version>2.0.5.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-codec-http2</artifactId>
-            <version>4.1.13.Final</version>
-        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>3.4.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcpkix-jdk15on</artifactId>
-            <version>${bouncycastle.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
@@ -116,9 +106,25 @@
 
         <!-- https://mvnrepository.com/artifact/org.apache.gossip/gossip -->
         <dependency>
-        <groupId>org.apache.gossip</groupId>
-        <artifactId>gossip</artifactId>
-        <version>0.1.2-incubating</version>
+            <groupId>org.apache.gossip</groupId>
+            <artifactId>gossip-base</artifactId>
+            <version>0.1.3-incubating</version>
+            <!--<systemPath>/Users/wwq/.m2/repository/org/apache/gossip/gossip-base/0.1.3-incubating/gossip-base-0.1.3-incubating.jar</systemPath>
+            <scope>system</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.gossip</groupId>
+            <artifactId>gossip-protocol-jackson</artifactId>
+            <version>0.1.3-incubating</version>
+            <!--<systemPath>/Users/wwq/.m2/repository/org/apache/gossip/gossip-protocol/0.1.3-incubating/gossip-protocol-jackson-0.1.3-incubating.jar</systemPath>
+            <scope>system</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.gossip</groupId>
+            <artifactId>gossip-transport-udp</artifactId>
+            <version>0.1.3-incubating</version>
+            <!--<systemPath>/Users/wwq/.m2/repository/org/apache/gossip/gossip-transport-udp/0.1.3-incubating/gossip-transport-udp-0.1.3-incubating.jar</systemPath>
+            <scope>system</scope>-->
         </dependency>
         <dependency>
             <groupId>org.hyperledger.fabric-sdk-java</groupId>
@@ -130,6 +136,52 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-math</groupId>
+            <artifactId>commons-math</artifactId>
+            <version>${commons-math.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${metrics.version}</version></dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
